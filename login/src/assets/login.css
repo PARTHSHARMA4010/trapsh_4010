@@ -208,3 +208,8 @@ i{
     width: 85%;
     transition: .5s ease-in-out;
   }
+
+
+.placeholder-hidden {
+    visibility: hidden;
+  }

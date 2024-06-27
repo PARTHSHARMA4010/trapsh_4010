@@ -27,7 +27,7 @@ const Register = () => {
           </div>
           <div className="input-field">
             <input type="text" className="input-box" name="regEmail" required />
-            <label htmlFor="regEmail">Email address</label>
+            <label htmlFor="regEmail">Mobile No.</label>
           </div>
           <div className="input-field">
             <input

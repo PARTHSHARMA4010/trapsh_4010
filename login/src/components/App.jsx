@@ -4,7 +4,6 @@ import Register from './Register';
 import '../assets/login.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-
 const App = () => {
   const [isLogin, setIsLogin] = useState(true);
 
