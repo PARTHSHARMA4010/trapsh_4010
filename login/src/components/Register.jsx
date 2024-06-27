@@ -1,22 +1,13 @@
-import React from 'react';
-
-  function myRegPassword() {
-    const passwordField = document.getElementById("regPassword");
-    const eye = document.getElementById("eye-2");
-    const eyeSlash = document.getElementById("eye-slash-2");
-  
-    if (passwordField.type === "password") {
-      passwordField.type = "text";
-      eye.style.opacity = "0";
-      eyeSlash.style.opacity = "1";
-    } else {
-      passwordField.type = "password";
-      eye.style.opacity = "1";
-      eyeSlash.style.opacity = "0";
-    }
-  }
+import React, { useState, useRef } from 'react';
 
 const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const passwordRef = useRef(null);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="box-register">
       <div className="top-header">
@@ -39,12 +30,17 @@ const Register = () => {
             <label htmlFor="regEmail">Email address</label>
           </div>
           <div className="input-field">
-            <input type="password" className="input-box" name="regPassword" required />
+            <input
+              type={showPassword ? 'text' : 'password'}
+              className="input-box"
+              name="regPassword"
+              ref={passwordRef}
+              required
+            />
             <label htmlFor="regPassword">Password</label>
             <div className="eye-area">
-              <div className="eye-box" onClick={() => myRegPassword()}>
-                <i className="fa-regular fa-eye" id="eye-2"></i>
-                <i className="fa-regular fa-eye-slash" id="eye-slash-2"></i>
+              <div className="eye-box" onClick={togglePasswordVisibility}>
+                <i className={`fa-regular ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} id="eye-2"></i>
               </div>
             </div>
           </div>
