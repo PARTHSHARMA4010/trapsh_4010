@@ -3,7 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './src/routes/auth.js';
-import { DB_NAME } from './src/constants';
+import { DB_NAME } from './src/constants.js';
 
 dotenv.config();
 
