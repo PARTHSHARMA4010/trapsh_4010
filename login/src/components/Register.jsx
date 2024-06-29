@@ -1,11 +1,29 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const passwordRef = useRef(null);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post('http://localhost:5000/api/auth/register', {
+        username,
+        email,
+        password,
+      });
+      console.log(res.data); // Handle token storage or user redirection here
+    } catch (err) {
+      setError('Registration failed');
+    }
   };
 
   return (
@@ -19,22 +37,22 @@ const Register = () => {
         <h3>Sign Up, Now!</h3>
         <small>We are happy to have you with us.</small>
       </div>
-      <form method="post" action="./process.php">
+      <form onSubmit={handleSubmit}>
         <div className="input-group">
           <div className="input-field">
-            <input type="text" className="input-box" name="regUsername" required />
+            <input type="text" className="input-box" value={username} onChange={(e) => setUsername(e.target.value)} required />
             <label htmlFor="regUsername">Username</label>
           </div>
           <div className="input-field">
-            <input type="text" className="input-box" name="regEmail" required />
+            <input type="text" className="input-box" value={email} onChange={(e) => setEmail(e.target.value)} required />
             <label htmlFor="regEmail">Mobile No.</label>
           </div>
           <div className="input-field">
             <input
               type={showPassword ? 'text' : 'password'}
               className="input-box"
-              name="regPassword"
-              ref={passwordRef}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <label htmlFor="regPassword">Password</label>
@@ -51,6 +69,7 @@ const Register = () => {
           <div className="input-field">
             <input type="submit" className="input-submit" id="one" value="Sign Up" />
           </div>
+          {error && <div className="error">{error}</div>}
         </div>
       </form>
     </div>

@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 import ForgotPassword from './ForgotPassword';
-
-function myLogPassword() {
-  const passwordField = document.getElementById("logPassword");
-  const eye = document.getElementById("eye");
-  const eyeSlash = document.getElementById("eye-slash");
-
-  if (passwordField.type === "password") {
-    passwordField.type = "text";
-    eye.style.opacity = "0";
-    eyeSlash.style.opacity = "1";
-  } else {
-    passwordField.type = "password";
-    eye.style.opacity = "1";
-    eyeSlash.style.opacity = "0";
-  }
-}
+import axios from 'axios';
 
 const Login = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleForgotPasswordClick = (e) => {
     e.preventDefault();
     setShowForgotPassword(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password,
+      });
+      console.log(res.data); // Handle token storage or user redirection here
+    } catch (err) {
+      setError('Invalid credentials');
+    }
   };
 
   return (
@@ -30,7 +31,7 @@ const Login = () => {
       {showForgotPassword ? (
         <ForgotPassword />
       ) : (
-        <>
+        <form onSubmit={handleSubmit}>
           <div className="top-header">
             <h2 style={{ marginTop: '-20px' }}>
               <span style={{ color: 'brown' }}>R</span>oti-
@@ -42,18 +43,12 @@ const Login = () => {
           </div>
           <div className="input-group">
             <div className="input-field">
-              <input type="text" className="input-box" id="logEmail" required />
+              <input type="text" className="input-box" id="logEmail" value={email} onChange={(e) => setEmail(e.target.value)} required />
               <label htmlFor="logEmail">Username</label>
             </div>
             <div className="input-field">
-              <input type="password" className="input-box" id="logPassword" required />
+              <input type="password" className="input-box" id="logPassword" value={password} onChange={(e) => setPassword(e.target.value)} required />
               <label htmlFor="logPassword">Password</label>
-              <div className="eye-area">
-                <div className="eye-box" onClick={() => myLogPassword()}>
-                  <i className="fa-regular fa-eye" id="eye"></i>
-                  <i className="fa-regular fa-eye-slash" id="eye-slash"></i>
-                </div>
-              </div>
             </div>
             <div className="remember">
               <input type="checkbox" id="formCheck" className="check" />
@@ -62,11 +57,12 @@ const Login = () => {
             <div className="input-field">
               <input type="submit" className="input-submit" id="two" value="Sign In" required />
             </div>
+            {error && <div className="error">{error}</div>}
             <div className="forgot">
               <a href="#" onClick={handleForgotPasswordClick}>Forgot password?</a>
             </div>
           </div>
-        </>
+        </form>
       )}
     </div>
   );
