@@ -1,11 +1,13 @@
+import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './src/routes/auth.js';
 import { DB_NAME } from './src/constants.js';
 
-dotenv.config();
+dotenv.config({
+  path:'./env'
+})
 
 const app = express();
 
@@ -18,17 +20,14 @@ app.use('/api/auth', authRoutes);
 
 ;(async () => {
   try {
-    await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    console.log(process.env.PORT);
+    await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`);
     console.log('MongoDB connected');
 
     app.on('error', (error) => {
       console.log('Error : ', error);
       throw error;
     });
-
     app.listen(process.env.PORT, () => {
       console.log(`App is listening on port ${process.env.PORT}`);
     });
