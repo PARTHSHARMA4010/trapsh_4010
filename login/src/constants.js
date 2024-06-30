@@ -1,1 +1,1 @@
-export const DB_NAME = trapsh;
+export const DB_NAME = "trapsh";
